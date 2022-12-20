@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed;
 
     private int desiredLane = 1;
-    public float laneDistance = 2.5f;
+    public float laneDistance = 2f;
 
     public bool isGrounded;
     public LayerMask groundLayer;
@@ -33,19 +33,105 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.17f, groundLayer);
+        if (PlayerManager.isGameStarted || PlayerManager.gameOver) return;
+        animator.SetBool("isGameStarted", true);
+        move.z = forwardSpeed;
+
+        CheckGround();
         if (isGrounded)
         {
-            Debug.Log("helelo");
+            if (SwipeManager.swipeUp)
+            {
+                Jump();
+            }
+            if (SwipeManager.swipeDown && !isSliding)
+            {
+                StartCoroutine(Slide());
+
+            }
         }
         else
         {
             velocity.y += gravity * Time.deltaTime;
+            if (SwipeManager.swipeDown && !isSliding)
+            {
+                StartCoroutine(Slide());
+                velocity.y = -10;
+            }
         }
-        move.z = forwardSpeed;
-        controller.Move(move * Time.deltaTime);
+
+
         controller.Move(velocity * Time.deltaTime);
-        animator.SetBool("isGameStarted", true);
+        if (SwipeManager.swipeRight)
+        {
+            desiredLane++;
+            if (desiredLane == 3)
+            {
+                desiredLane = 2;
+            }
+        }
+        if (SwipeManager.swipeLeft)
+        {
+            desiredLane--;
+            if (desiredLane == -1)
+            {
+                desiredLane = 0;
+            }
+        }
+
+        Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
+        if (desiredLane == 0)
+        {
+            targetPosition += Vector3.left * laneDistance;
+        } else if (desiredLane == 2)
+        {
+            targetPosition += Vector3.right * laneDistance;
+        }
+
+        if(transform.position != targetPosition)
+        {
+            Vector3 diff = targetPosition - transform.position;
+            Vector3 moveDir = diff.normalized * 30 * Time.deltaTime;
+            if(moveDir.sqrMagnitude < diff.magnitude)
+            {
+                controller.Move(moveDir);
+            }
+            else
+            {
+                controller.Move(diff);
+            }
+        }
+
+
+        controller.Move(move * Time.deltaTime);
+
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.transform.tag == "Obstacle")
+        {
+            PlayerManager.gameOver = true;
+            FindObjectOfType<AudioManager>().PlaySound("GameOver");
+        }
+    }
+    private void CheckGround()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, 2f, groundLayer);
+    }
+
+    private void Jump()
+    {
+        controller.height = 2;
+        isSliding = false;
+        velocity.y = Mathf.Sqrt(jumpHeight * 2 * -gravity);
+        
+    }
+    private IEnumerator Slide()
+    {
+
+        isSliding = true;
+        animator.SetBool("isSliding", true);
+        yield return new WaitForSeconds(0.25f / Time.timeScale);
 
     }
 }
