@@ -12,6 +12,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] private int numberTileSpawn = 3;
     [SerializeField] private int zSpawn = 0;
 
+    
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +22,12 @@ public class TileManager : MonoBehaviour
         {
             if (i == 0)
             {
-                SpawnTiles();
+                SpawnTiles(0);
             }
             else
             {
                 SpawnTiles(Random.Range(0, totalOfTiles));
+               /* SpawnTiles((0));*/
             }
         }
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -37,13 +39,13 @@ public class TileManager : MonoBehaviour
         if (playerTransform.position.z - 30 >= zSpawn - (numberTileSpawn * lengthOfTile))
         {
             SpawnTiles(Random.Range(0, totalOfTiles));
+           /* SpawnTiles(0);*/
             DeleteTiles();
         }
     }
     //Spawn Tiles
-    private void SpawnTiles(int index = 0)
+    private void SpawnTiles(int index)
     {
-
         GameObject tileInit = Instantiate(tilesPrefabs[index], transform.forward * zSpawn, transform.rotation);
         activeTiles.Add(tileInit);
         zSpawn += lengthOfTile;

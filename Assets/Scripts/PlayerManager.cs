@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         int index = PlayerPrefs.GetInt("SelectedCharacter");
-        GameObject go = Instantiate(characterPrefabs[index], transform.position, Quaternion.identity);
+        GameObject go = Instantiate(characterPrefabs[0], transform.position, Quaternion.identity);
         
     }
 
