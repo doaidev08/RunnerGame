@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
     private Vector3 move;
     public float forwardSpeed = 17f;
-    public float maxSpeed;
+    public float maxSpeed = 70f;
 
     private int desiredLane = 1;
     public float laneDistance = 2.5f;
@@ -31,11 +31,15 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if(forwardSpeed < maxSpeed)
+        {
+            forwardSpeed += Time.deltaTime * 0.4f;
+        }
         if (PlayerManager.isGameStarted || PlayerManager.gameOver) return;
         animator.SetBool("isGameStarted", true);
         move.z = forwardSpeed;
         isGrounded = Physics.CheckSphere(groundCheck.position, .17f, groundLayer);
-        if (isGrounded) { Debug.Log("yooo"); }
+        if (isGrounded) {  }
 
         animator.SetBool("isGround", isGrounded);
         if(isGrounded && velocity.y < 0)

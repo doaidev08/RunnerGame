@@ -37,11 +37,10 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        //Update UI
+
         gemsText.text = PlayerPrefs.GetInt("TotalGems", 0).ToString();
         scoreText.text = score.ToString();
 
-        //Game Over
         if (gameOver)
         {
             Time.timeScale = 0;
@@ -60,7 +59,7 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //Start Game
+   
         if (SwipeManager.tap && !isGameStarted)
         {
             isGameStarted = true;

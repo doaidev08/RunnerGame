@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Gray
-    second: {fileID: 2100000, guid: b612b439899dd2b4fb3e97b2ccca5106, type: 2}
+    second: {fileID: 2100000, guid: 1d97d3e66d3177240ae59310c2388d2b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: White.001
-    second: {fileID: 2100000, guid: ad7be07e1c003074c9ab5e81bfefb059, type: 2}
+    second: {fileID: 2100000, guid: 7761143d28b6044468188fde1aadc826, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Yellow
-    second: {fileID: 2100000, guid: a79877c92d6ded64199ccf40f49c92fc, type: 2}
+    second: {fileID: 2100000, guid: 1d97d3e66d3177240ae59310c2388d2b, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
