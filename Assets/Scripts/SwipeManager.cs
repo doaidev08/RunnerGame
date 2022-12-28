@@ -82,4 +82,5 @@ public class SwipeManager : MonoBehaviour
         startTouch = swipeDelta = Vector2.zero;
         isDragging = false;
     }
+    
 }

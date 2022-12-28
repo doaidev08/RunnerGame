@@ -26,8 +26,8 @@ public class TileManager : MonoBehaviour
             }
             else
             {
-                /* SpawnTiles(Random.Range(0, totalOfTiles));*/
-                SpawnTiles((1));
+                SpawnTiles(Random.Range(0, totalOfTiles));
+                /*SpawnTiles((1));*/
             }
         }
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -38,8 +38,8 @@ public class TileManager : MonoBehaviour
     {
         if (playerTransform.position.z - 30 >= zSpawn - (numberTileSpawn * lengthOfTile))
         {
-            /*  SpawnTiles(Random.Range(0, totalOfTiles));*/
-            SpawnTiles(1);
+            SpawnTiles(Random.Range(0, totalOfTiles));
+           /* SpawnTiles(1);*/
             DeleteTiles();
         }
     }
@@ -56,6 +56,7 @@ public class TileManager : MonoBehaviour
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
+        PlayerManager.score += 5;
 
     }
 

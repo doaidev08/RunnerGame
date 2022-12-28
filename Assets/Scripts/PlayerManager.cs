@@ -1,30 +1,31 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections;
 public class PlayerManager : MonoBehaviour
 {
     public static bool gameOver;
     public GameObject gameOverPanel;
 
     public static bool isGameStarted;
-    public GameObject startingText;
+    private GameObject startingText;
     public GameObject newRecordPanel;
 
     public static int score;
-    public Text scoreText;
-    public TextMeshProUGUI gemsText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI coinText;
     public TextMeshProUGUI newRecordText;
 
     public static bool isGamePaused;
+    public bool flagCheckNewScore = false;
     public GameObject[] characterPrefabs;
 
 
     private void Awake()
     {
         int index = PlayerPrefs.GetInt("SelectedCharacter");
-        GameObject go = Instantiate(characterPrefabs[0], transform.position, Quaternion.identity);
-        
+        GameObject go = Instantiate(characterPrefabs[index], transform.position, Quaternion.identity);
+
     }
 
     void Start()
@@ -38,8 +39,9 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
 
-        gemsText.text = PlayerPrefs.GetInt("TotalGems", 0).ToString();
+        coinText.text = PlayerPrefs.GetInt("TotalCoins", 0).ToString();
         scoreText.text = score.ToString();
+
 
         if (gameOver)
         {
@@ -47,23 +49,28 @@ public class PlayerManager : MonoBehaviour
             if (score > PlayerPrefs.GetInt("HighScore", 0))
             {
                 newRecordPanel.SetActive(true);
-                newRecordText.text = "New \nRecord\n" + score;
+                newRecordText.text = score.ToString();
                 PlayerPrefs.SetInt("HighScore", score);
+                flagCheckNewScore= true;
             }
             else
             {
-               
-            }
 
-            gameOverPanel.SetActive(true);
-            Destroy(gameObject);
+            }
+            if (flagCheckNewScore == false)
+            {
+                gameOverPanel.SetActive(true);
+                Destroy(gameObject);
+            }
         }
 
-   
+/*
         if (SwipeManager.tap && !isGameStarted)
         {
             isGameStarted = true;
             Destroy(startingText);
-        }
+        }*/
     }
+  
+
 }

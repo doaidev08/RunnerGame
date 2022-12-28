@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class EventManager : MonoBehaviour
 {
 
+
+
     // Start is called before the first frame update
 
 
@@ -29,18 +31,15 @@ public class EventManager : MonoBehaviour
     }
     public void PauseGame()
     {
-        
+
+        if (!PlayerManager.isGamePaused && !PlayerManager.gameOver)
         {
             Time.timeScale = 0;
             PlayerManager.isGamePaused = true;
-            if (!PlayerManager.isGamePaused && !PlayerManager.gameOver)
-            {
-                Time.timeScale = 0;
-                PlayerManager.isGamePaused = true;
-            }
         }
 
     }
+
     public void ResumeGame()
     {
         if (PlayerManager.isGamePaused)
@@ -52,5 +51,9 @@ public class EventManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void BackNewRecord()
+    {
+        SceneManager.LoadScene("GameMain");
     }
 }

@@ -31,24 +31,29 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if(forwardSpeed < maxSpeed)
+        if (forwardSpeed < maxSpeed)
         {
             forwardSpeed += Time.deltaTime * 0.4f;
         }
-        if (PlayerManager.isGameStarted || PlayerManager.gameOver) return;
-        animator.SetBool("isGameStarted", true);
-        move.z = forwardSpeed;
-        isGrounded = Physics.CheckSphere(groundCheck.position, .17f, groundLayer);
-        if (isGrounded) {  }
 
-        animator.SetBool("isGround", isGrounded);
-        if(isGrounded && velocity.y < 0)
+
+        if (PlayerManager.isGameStarted || PlayerManager.gameOver) return;
+
+        animator.SetBool("isGameStarted", true);
+
+        move.z = forwardSpeed;
+        isGrounded = Physics.CheckSphere(groundCheck.position, .3f, groundLayer);
+
+        animator.SetBool("isGrounded", isGrounded);
+
+        if (isGrounded && velocity.y < 0)
         {
             velocity.y = -1f;
         }
 
         if (isGrounded)
         {
+          
             if (SwipeManager.swipeUp)
             {
                 Jump();
@@ -63,9 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y += gravity * Time.deltaTime;
             if (SwipeManager.swipeDown && !isSliding)
-            {
-                
-               
+            {           
                 StartCoroutine(Slide());
                 velocity.y = -10;
             }
@@ -118,14 +121,14 @@ public class PlayerController : MonoBehaviour
         controller.Move(move * Time.deltaTime);
 
     }
- /*   private void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.tag == "Obstacle")
         {
             PlayerManager.gameOver = true;
             FindObjectOfType<AudioManager>().PlaySound("GameOver");
         }
-    }*/
+    }
 
 
     private void Jump()
@@ -133,25 +136,26 @@ public class PlayerController : MonoBehaviour
         StopCoroutine(Slide());
         animator.SetBool("isSliding", false);
         animator.SetTrigger("jump");
-       /* controller.center = Vector3.zero;*/
+      /*  controller.center = Vector3.zero;*/
        /* controller.height = 2;*/
         isSliding = false;
+   
         velocity.y = Mathf.Sqrt(jumpHeight * 2 * -gravity);
+        
+        
+        
         
     }
     private IEnumerator Slide()
     {
         isSliding = true;
+        controller.center = new Vector3(0, 0.1f, 0);
+        controller.height = .5F;
         animator.SetBool("isSliding", true);
-        yield return new WaitForSeconds(0.25f / Time.timeScale);
-        /*controller.center = new Vector3(0, -0.5f, 0);*/
-        /*controller.height = 1;*/
-        yield return new WaitForSeconds((slideDuration - 0.25f)/Time.timeScale);
-
-        
+        yield return new WaitForSeconds(.7f);
         animator.SetBool("isSliding", false);
-       /* controller.center = Vector3.zero;*/
-    /*    controller.height = 2;*/
+        controller.center = new Vector3(0, 0.7f, 0);
+        controller.height = 1.49f;
         isSliding = false;
 
     }
